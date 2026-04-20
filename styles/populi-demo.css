@@ -192,6 +192,10 @@
   font-family: inherit;
 }
 
+a.populi-demo__nav-item {
+  cursor: pointer;
+}
+
 .populi-demo__nav-item:hover {
   color: var(--populi-text);
   background: rgba(255, 255, 255, 0.04);

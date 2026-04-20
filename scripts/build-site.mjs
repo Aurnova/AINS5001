@@ -66,6 +66,17 @@ const NAV_ITEMS = [
   'Settings',
 ]
 
+const DEFAULT_LESSONS_CATALOG_URL = 'https://inquiryinstitute.github.io/aima/slides/'
+
+function renderNavItem(item, { lessonsCatalogUrl }) {
+  const active = item === 'Dashboard'
+  const cls = `populi-demo__nav-item${active ? ' populi-demo__nav-item--active' : ''}`
+  if (item === 'Lessons' && lessonsCatalogUrl) {
+    return `<a class="${cls}" href="${escapeHtml(lessonsCatalogUrl)}">${escapeHtml(item)}</a>`
+  }
+  return `<span class="${cls}">${escapeHtml(item)}</span>`
+}
+
 function renderShellHtml({
   courseCode,
   courseTitle,
@@ -75,12 +86,13 @@ function renderShellHtml({
   bodyHtml,
   description,
   programsCatalogUrl,
+  lessonsCatalogUrl,
 }) {
   const pill = pillLabel ?? `${String(courseCode).replace(/\s+/g, '')}: Dashboard`
-  const navItemsHtml = NAV_ITEMS.map(
-    (item) =>
-      `<span class="populi-demo__nav-item${item === 'Dashboard' ? ' populi-demo__nav-item--active' : ''}">${escapeHtml(item)}</span>`,
-  ).join('\n        ')
+  const lessonsUrl = lessonsCatalogUrl || DEFAULT_LESSONS_CATALOG_URL
+  const navItemsHtml = NAV_ITEMS.map((item) => renderNavItem(item, { lessonsCatalogUrl: lessonsUrl })).join(
+    '\n        ',
+  )
 
   const descPara = description
     ? `<p class="populi-demo__panel-body">${escapeHtml(description)}</p>`
@@ -126,7 +138,7 @@ function renderShellHtml({
         <nav class="populi-demo__nav">
         ${navItemsHtml}
         </nav>
-        <div class="populi-demo__nav-footer">Demo layout · not interactive</div>
+        <div class="populi-demo__nav-footer">Demo sidebar · <strong>Lessons</strong> opens the Jupyter Book lecture list</div>
       </aside>
 
       <div class="populi-demo__main">
@@ -198,6 +210,7 @@ function main() {
     bodyHtml,
     description: variant.description ?? '',
     programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
+    lessonsCatalogUrl: variant.lessonsCatalogUrl ?? DEFAULT_LESSONS_CATALOG_URL,
   })
 
   const dist = path.join(ROOT, 'dist')
