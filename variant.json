@@ -1,10 +1,16 @@
 {
+  "audience": "instructor",
   "courseCode": "AINS5001",
   "courseTitle": "A Modern Approach to AI",
-  "pillLabel": "Aurnova · AINS5001",
-  "description": "A Modern Approach to AI (AINS5001) — Castalia / Inquiry Institute AIMA delivery demo for Aurnova.",
+  "pillLabel": "Aurnova · AINS5001 · Instructor",
+  "description": "Instructor-facing hub for AINS5001 — full-course delivery: narrative site, slides + TTS, IMS CC sources, and links to materials that must not live in the student clone.",
   "lessonsCatalogUrl": "https://inquiryinstitute.github.io/aima/slides/",
+  "navItemLinks": {
+    "Lessons": "https://inquiryinstitute.github.io/aima/slides/",
+    "Files": "https://github.com/InquiryInstitute/aima/tree/main/course",
+    "Assignments": "https://github.com/InquiryInstitute/aima/blob/main/docs/CLASSROOM_SETUP.md"
+  },
   "programsCatalogUrl": "https://programs.castalia.institute/catalog/aima",
-  "alertText": "This course opens on Aug 31, 2026",
+  "alertText": "Instructor view — do not share this page as the primary student entry point.",
   "termLabel": "2026-2027: Fall Semester 2026 A"
 }

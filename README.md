@@ -1,19 +1,19 @@
-# AINS5001 — Aurnova
+# AINS5001 — Instructor (Aurnova)
 
-A Modern Approach to AI (AINS5001) — Castalia / Inquiry Institute AIMA delivery demo for Aurnova.
+**Live site:** https://aurnova.github.io/AINS5001/
 
-- **Source:** `index.md` (from [programs](https://github.com/Aurnova/programs) `demo-sources/ain2001/classroom.md`).
-- **Live site (after Pages):** https://Aurnova.github.io/AINS5001/
-- **Layout:** Populi-style course shell (same visual language as the [AIMA catalog](https://programs.castalia.institute/catalog/aima)); built to static HTML with `marked`. **Lessons** in the sidebar links to the [Jupyter Book slide index](https://inquiryinstitute.github.io/aima/slides/) on the main AIMA site (override with `lessonsCatalogUrl` in `variant.json`).
+**Audience:** **Instructors / staff** — full-course delivery pointers: Jupyter Book + slides/TTS, IMS CC **sources**, instructor-notes in **aima**, and explicit guidance that **solutions** ship through Castalia/private channels, **not** the student-facing site.
 
-## Build locally
+**Student-facing site (minimal):** https://aurnova.github.io/AINS5001-student/ — repository [**AINS5001-student**](https://github.com/Aurnova/AINS5001-student): what learners clone for **Codespaces + exercises + Classroom**.
+
+## Build
 
 ```bash
 npm install
 npm run build
 ```
 
-Open `dist/index.html`. On GitHub Actions, `dist/` is published to Pages.
+`variant.json` sets `audience: "instructor"` and optional `navItemLinks` for sidebar items (**Lessons**, **Files**, **Assignments**).
 
 ## License
 

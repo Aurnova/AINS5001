@@ -1,25 +1,36 @@
 ---
-title: AIMA5001 Classroom
-description: GitHub Classroom + Codespaces — engineering-native workflow.
+title: AINS5001 — Instructor hub
+description: Castalia / Inquiry Institute AIMA — instructor delivery surface (not the student clone).
 ---
 
-# AIMA5001: Classroom
+# AINS5001: Instructor hub
 
-**Source:** `index.md` in this repository → https://Aurnova.github.io/AINS5001/.
+**Audience:** instructors and program staff delivering **A Modern Approach to AI** for Aurnova.  
+**Student entry point:** send learners to **[AINS5001-student](https://aurnova.github.io/AINS5001-student/)** — that site is scoped to **GitHub Classroom + Codespaces + exercises** only.
 
-## Product
+## What belongs here (instructor)
 
-**GitHub Classroom** distributes private assignment repos; **devcontainers** (Codespaces or local) give every student the same Python environment, tests, and autograding hooks.
+| Track | Where to find it |
+| --- | --- |
+| **Full narrative & book** | Public **[Jupyter Book (AIMA on Pages)](https://inquiryinstitute.github.io/aima/)** — readings, syllabus-aligned pages, assignments index |
+| **Slide sessions + MP3 / VTT** | **[Lecture slides index](https://inquiryinstitute.github.io/aima/slides/)** — same slide order as the Reveal / TTS pipeline in the upstream [aima](https://github.com/InquiryInstitute/aima) repo |
+| **Instructor notes & course ops** | [instructor-notes](https://github.com/InquiryInstitute/aima/tree/main/instructor-notes) in **aima** |
+| **Exercise solutions & rubrics** | Distribute through **Castalia / your program channel** (private LMS, faculty drive, or signed artifacts) — **not** the public student Pages site or bare student template repos |
+| **IMS CC (Moodle / LMS packages)** | Built from MyST sources under **aima** `course/` — see [course](https://github.com/InquiryInstitute/aima/tree/main/course) and deployment docs in that repo; use sidebar **Files** as a quick jump to the source tree you export from |
 
-**Student workspace template:** [**aima-codespace**](https://github.com/InquiryInstitute/aima-codespace) — fork into your account and **rename** the repository to `aima-<your-github-username>`, then open it in **GitHub Codespaces**. It includes a `.devcontainer` definition and `exercises/` with pytest-based tasks.
+## Engineering workflow (reminder)
+
+- **GitHub Classroom** — private assignment repos per learner.  
+- **Codespace template** — [**aima-codespace**](https://github.com/InquiryInstitute/aima-codespace): students fork/rename to `aima-<github-username>`.  
+- **Exercise starter** — [aima-exercise-starter](https://github.com/InquiryInstitute/aima/tree/main/classroom-templates/aima-exercise-starter) in **aima**.
 
 ```{note}
-Assignments and rubrics remain authorable in the course book; Classroom is the delivery and submission rail.
+This repository’s Pages build is a **thin Castalia-style shell** around `index.md`. Heavy course content stays in **aima**; the **student** site stays intentionally minimal.
 ```
 
 ## References
 
-- [aima-codespace](https://github.com/InquiryInstitute/aima-codespace) — fork as `aima-{username}`, Codespaces + exercises
-- [Exercise starter template](https://github.com/InquiryInstitute/aima/tree/main/classroom-templates/aima-exercise-starter) (within the main AIMA repo)
-- [Classroom setup guide](https://github.com/InquiryInstitute/aima/blob/main/docs/CLASSROOM_SETUP.md)
+- [Student-facing site](https://aurnova.github.io/AINS5001-student/)
+- [aima-codespace](https://github.com/InquiryInstitute/aima-codespace)
+- [Classroom setup (aima)](https://github.com/InquiryInstitute/aima/blob/main/docs/CLASSROOM_SETUP.md)
 - [AIMA repository](https://github.com/InquiryInstitute/aima)

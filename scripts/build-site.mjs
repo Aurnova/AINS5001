@@ -68,11 +68,20 @@ const NAV_ITEMS = [
 
 const DEFAULT_LESSONS_CATALOG_URL = 'https://inquiryinstitute.github.io/aima/slides/'
 
-function renderNavItem(item, { lessonsCatalogUrl }) {
+/** Merge explicit per-item URLs from variant.json `navItemLinks` with the Lessons default. */
+function resolveNavLinks(variant) {
+  const out = { ...(variant.navItemLinks && typeof variant.navItemLinks === 'object' ? variant.navItemLinks : {}) }
+  const lessons = variant.lessonsCatalogUrl ?? DEFAULT_LESSONS_CATALOG_URL
+  if (!out.Lessons && lessons) out.Lessons = lessons
+  return out
+}
+
+function renderNavItem(item, navLinks) {
   const active = item === 'Dashboard'
   const cls = `populi-demo__nav-item${active ? ' populi-demo__nav-item--active' : ''}`
-  if (item === 'Lessons' && lessonsCatalogUrl) {
-    return `<a class="${cls}" href="${escapeHtml(lessonsCatalogUrl)}">${escapeHtml(item)}</a>`
+  const href = navLinks[item]
+  if (href) {
+    return `<a class="${cls}" href="${escapeHtml(href)}">${escapeHtml(item)}</a>`
   }
   return `<span class="${cls}">${escapeHtml(item)}</span>`
 }
@@ -86,13 +95,12 @@ function renderShellHtml({
   bodyHtml,
   description,
   programsCatalogUrl,
-  lessonsCatalogUrl,
+  navLinks,
+  footerHtml,
+  audience,
 }) {
   const pill = pillLabel ?? `${String(courseCode).replace(/\s+/g, '')}: Dashboard`
-  const lessonsUrl = lessonsCatalogUrl || DEFAULT_LESSONS_CATALOG_URL
-  const navItemsHtml = NAV_ITEMS.map((item) => renderNavItem(item, { lessonsCatalogUrl: lessonsUrl })).join(
-    '\n        ',
-  )
+  const navItemsHtml = NAV_ITEMS.map((item) => renderNavItem(item, navLinks)).join('\n        ')
 
   const descPara = description
     ? `<p class="populi-demo__panel-body">${escapeHtml(description)}</p>`
@@ -103,7 +111,7 @@ function renderShellHtml({
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(courseCode)}: ${escapeHtml(courseTitle)} — Castalia</title>
+  <title>${escapeHtml(courseCode)}: ${escapeHtml(courseTitle)} — ${audience === 'student' ? 'Student' : 'Instructor'} — Castalia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -138,7 +146,7 @@ function renderShellHtml({
         <nav class="populi-demo__nav">
         ${navItemsHtml}
         </nav>
-        <div class="populi-demo__nav-footer">Demo sidebar · <strong>Lessons</strong> opens the Jupyter Book lecture list</div>
+        <div class="populi-demo__nav-footer">${footerHtml}</div>
       </aside>
 
       <div class="populi-demo__main">
@@ -201,6 +209,17 @@ function main() {
   marked.setOptions({ gfm: true })
   const bodyHtml = marked.parse(md)
 
+  const audience = variant.audience === 'student' ? 'student' : 'instructor'
+  let footerHtml =
+    typeof variant.navFooter === 'string' && variant.navFooter.trim()
+      ? escapeHtml(variant.navFooter.trim())
+      : ''
+  if (!footerHtml) {
+    footerHtml =
+      audience === 'student'
+        ? 'Student site · <strong>Lessons</strong> = public slide index · <strong>Assignments</strong> = GitHub Classroom (set URL in variant.json)'
+        : 'Instructor site · <strong>Lessons</strong> = Jupyter Book slides + TTS · set <strong>Files</strong> / <strong>Assignments</strong> in variant.json (IMS CC, Classroom)'
+  }
   const html = renderShellHtml({
     courseCode: variant.courseCode,
     courseTitle: variant.courseTitle,
@@ -210,7 +229,9 @@ function main() {
     bodyHtml,
     description: variant.description ?? '',
     programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
-    lessonsCatalogUrl: variant.lessonsCatalogUrl ?? DEFAULT_LESSONS_CATALOG_URL,
+    navLinks: resolveNavLinks(variant),
+    footerHtml,
+    audience,
   })
 
   const dist = path.join(ROOT, 'dist')
