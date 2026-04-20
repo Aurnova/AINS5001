@@ -1,0 +1,13 @@
+{
+  "name": "ains5001",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AINS5001 — Aurnova — Populi-style course demo (GitHub Pages)",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-site.mjs"
+  },
+  "devDependencies": {
+    "marked": "^15.0.0"
+  }
+}
