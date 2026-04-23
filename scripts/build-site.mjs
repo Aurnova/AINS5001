@@ -55,10 +55,17 @@ function escapeHtml(s) {
  */
 const DEFAULT_JUPYTER_SLIDES_BASE = 'jupyter-book/slides'
 
+/** Strips this site’s absolute URL if people paste a full GHP link into variant.json. */
+function normalizeJupyterSlidesBase(input) {
+  const raw = String(input || DEFAULT_JUPYTER_SLIDES_BASE).trim().replace(/\/$/, '')
+  if (/^https:\/\/aurnova\.github\.io\/AINS5001\/?/i.test(raw)) {
+    return raw.replace(/^https:\/\/aurnova\.github\.io\/AINS5001\/?/i, '') || DEFAULT_JUPYTER_SLIDES_BASE
+  }
+  return raw.replace(/^\.\//, '')
+}
+
 function jupyterSlideDecksSectionHtml(baseUrl) {
-  const raw = String(baseUrl || DEFAULT_JUPYTER_SLIDES_BASE).replace(/\/$/, '')
-  const isAbs = /^https?:\/\//i.test(raw)
-  const base = isAbs ? raw : raw.replace(/^\.\//, '')
+  const base = normalizeJupyterSlidesBase(baseUrl)
   const indexPage = `${base}/index.html`
   const listItems = []
   for (let i = 0; i <= 28; i += 1) {
@@ -277,7 +284,7 @@ function main() {
     termLabel: variant.termLabel ?? '2026-2027: Fall Semester 2026 A',
     bodyHtml,
     description: variant.description ?? '',
-    programsCatalogUrl: variant.programsCatalogUrl ?? 'https://aurnova.github.io/AINS5001/',
+    programsCatalogUrl: variant.programsCatalogUrl ?? 'index.html',
     navLinks,
     footerHtml,
     audience,
@@ -300,7 +307,7 @@ function main() {
       termLabel: variant.termLabel ?? '2026-2027: Fall Semester 2026 A',
       bodyHtml: lessonsBody,
       description: variant.description ?? '',
-      programsCatalogUrl: variant.programsCatalogUrl ?? 'https://aurnova.github.io/AINS5001/',
+      programsCatalogUrl: variant.programsCatalogUrl ?? 'index.html',
       navLinks,
       footerHtml,
       audience,

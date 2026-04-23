@@ -1,0 +1,8 @@
+== status ==
+## main...origin/main
+ M .github/workflows/pages.yml
+ M lectures.md
+ M scripts/build-site.mjs
+ M variant.json
+?? .git-run-output.txt
+== commit ==

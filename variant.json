@@ -11,7 +11,7 @@
     "Files": "course.imscc",
     "Assignments": "jupyter-book/assignments.html"
   },
-  "programsCatalogUrl": "https://aurnova.github.io/AINS5001/",
+  "programsCatalogUrl": "index.html",
   "alertText": "Instructor view — do not share this page as the primary student entry point.",
   "termLabel": "2026-2027: Fall Semester 2026 A"
 }
