@@ -1,21 +1,12 @@
 ---
 title: Lessons
-description: AINS5001 — lecture materials hub (Aurnova site)
+description: AINS5001 — links to each Jupyter Book slide deck
 ---
 
 # Lessons
 
-This page is part of **[Aurnova AINS5001](index.html)** on GitHub Pages. Use it as the in-repo entry point for lecture material; the **Lessons** item in the course sidebar is intentionally kept on this site.
+**Audience:** instructors using **[Aurnova AINS5001](index.html)**. The **Lessons** item in the left rail is on this same GitHub Pages site. **Dashboard** returns to the [instructor home](index.html).
 
-## Slide decks (Jupyter Book)
+The public **Jupyter Book** build (MyST slide pages, same order as the `aima` Reveal + TTS pipeline) lists each deck in the **section below**. Each link opens that lecture’s slide page on the InquiryInstitute/aima Pages host.
 
-The public slide build that matches the `aima` course (Reveal order, TTS, MyST) is published at **[InquiryInstitute/aima — Slides on Pages](https://inquiryinstitute.github.io/aima/slides/)** — a separate deployment from the upstream **[aima](https://github.com/InquiryInstitute/aima)** repository.
-
-## IMS / cartridge-style pages (optional)
-
-When this repo also ships the myst-imscc `docs/` tree (same origin, e.g. `lectures.html` from the nav plus paths under `web_resources/…`), the slide-like HTML for each lecture appears under the IMS export. That layout is not required for this Populi shell; coordinate with your delivery pipeline if you merge both trees into one GitHub Pages artifact.
-
-## Back to hub
-
-- [Instructor hub (Dashboard)](index.html)
-- [Student site](https://aurnova.github.io/AINS5001-student/) (Classroom + exercises only; do not use as primary instructor view)
+_If a link shows a redirect, your browser is following the project’s GitHub Pages or custom-domain configuration._

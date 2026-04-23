@@ -49,6 +49,33 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;')
 }
 
+const DEFAULT_JUPYTER_SLIDES_BASE = 'https://inquiryinstitute.github.io/aima/slides'
+
+function jupyterSlideDecksSectionHtml(baseUrl) {
+  const base = String(baseUrl || DEFAULT_JUPYTER_SLIDES_BASE).replace(/\/$/, '')
+  const indexPage = `${base}/index.html`
+  const listItems = []
+  for (let i = 0; i <= 28; i += 1) {
+    const id = String(i).padStart(2, '0')
+    const pageUrl = `${base}/lecture-${id}.html`
+    listItems.push(
+      `      <li><a href="${escapeHtml(pageUrl)}" rel="noopener noreferrer" target="_blank">Lecture ${i}</a></li>`,
+    )
+  }
+  return `
+<section class="lecture-slide-decks" aria-labelledby="lecture-slides-h">
+  <h2 id="lecture-slides-h">Jupyter Book: one page per lecture</h2>
+  <p class="lecture-slide-decks__lede">Slide pages are hosted on the public AIMA Pages build. Start from the <a href="${escapeHtml(
+    indexPage,
+  )}" rel="noopener noreferrer" target="_blank">Lecture slides index</a> or open a lecture below.</p>
+  <p class="lecture-slide-decks__note">Links open in a new tab (host: <code>inquiryinstitute.github.io/aima</code>).</p>
+  <ul class="lecture-slide-decks__list">
+${listItems.join('\n')}
+  </ul>
+</section>
+`
+}
+
 const NAV_ITEMS = [
   'Dashboard',
   'Syllabus',
@@ -257,7 +284,8 @@ function main() {
     let lessonsMd = readFileSync(lessonsPath, 'utf8')
     lessonsMd = stripFrontmatter(lessonsMd)
     lessonsMd = preprocessFences(lessonsMd)
-    const lessonsBody = marked.parse(lessonsMd)
+    const slideBase = typeof variant.jupyterSlidesBaseUrl === 'string' ? variant.jupyterSlidesBaseUrl : DEFAULT_JUPYTER_SLIDES_BASE
+    const lessonsBody = marked.parse(lessonsMd) + jupyterSlideDecksSectionHtml(slideBase)
     const lessonsHtml = renderShellHtml({
       courseCode: variant.courseCode,
       courseTitle: variant.courseTitle,
