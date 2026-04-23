@@ -18,8 +18,9 @@ concurrency:
 # Build Jupyter Book with the same subpath the site will use (GitHub project Pages).
 # Set vars.AIMA_REPO to override the aima monorepo (e.g. a public fork). Default: CastaliaInstitute/aima
 # That repo is private — set secret AIMA_CLONE_TOKEN (PAT, Contents: read) so checkout can cross orgs.
+# No trailing slash — MyST otherwise emits /jupyter-book// in asset URLs and breaks theme loading.
 env:
-  JUPYTER_BASE_URL: /AINS5001/jupyter-book/
+  JUPYTER_BASE_URL: /AINS5001/jupyter-book
 
 jobs:
   build:
@@ -86,6 +87,11 @@ jobs:
           }
           strip_host dist/jupyter-book
           strip_host dist/docs
+          if [ -d dist/jupyter-book ]; then
+            find dist/jupyter-book -type f \( -name '*.html' -o -name '*.json' -o -name '*.js' -o -name '*.xml' -o -name '*.css' \) -print0 | while IFS= read -r -d '' f; do
+              sed -i 's|/AINS5001/jupyter-book//|/AINS5001/jupyter-book/|g' "$f"
+            done
+          fi
 
       - uses: actions/upload-pages-artifact@v3
         with:

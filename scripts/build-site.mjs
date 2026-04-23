@@ -50,27 +50,32 @@ function escapeHtml(s) {
 }
 
 /**
- * Same-origin slide paths: CI copies MyST <code>course/myst/_build/html</code> → <code>dist/jupyter-book/</code>
- * with <code>BASE_URL=/AINS5001/jupyter-book/</code> so links resolve on this site only.
+ * MyST emits each slide session as <code>jupyter-book/lecture-NN/index.html</code> (not <code>slides/lecture-NN.html</code>).
+ * The “Lecture slides” table of contents is <code>jupyter-book/index-1/index.html</code> (second index in the project).
+ * CI: <code>dist/jupyter-book</code> ← <code>course/myst/_build/html</code>.
  */
-const DEFAULT_JUPYTER_SLIDES_BASE = 'jupyter-book/slides'
+const DEFAULT_JUPYTER_SLIDES_BASE = 'jupyter-book'
+/** @deprecated use DEFAULT_JUPYTER_SLIDES_BASE — kept for normalize */
+const LEGACY_SLIDES_PREFIX = 'jupyter-book/slides'
 
-/** Strips this site’s absolute URL if people paste a full GHP link into variant.json. */
 function normalizeJupyterSlidesBase(input) {
-  const raw = String(input || DEFAULT_JUPYTER_SLIDES_BASE).trim().replace(/\/$/, '')
+  let raw = String(input || DEFAULT_JUPYTER_SLIDES_BASE).trim().replace(/\/$/, '')
   if (/^https:\/\/aurnova\.github\.io\/AINS5001\/?/i.test(raw)) {
-    return raw.replace(/^https:\/\/aurnova\.github\.io\/AINS5001\/?/i, '') || DEFAULT_JUPYTER_SLIDES_BASE
+    raw = raw.replace(/^https:\/\/aurnova\.github\.io\/AINS5001\/?/i, '') || DEFAULT_JUPYTER_SLIDES_BASE
   }
-  return raw.replace(/^\.\//, '')
+  raw = raw.replace(/^\.\//, '')
+  if (raw === LEGACY_SLIDES_PREFIX) return DEFAULT_JUPYTER_SLIDES_BASE
+  if (raw.startsWith(`${LEGACY_SLIDES_PREFIX}/`)) return `jupyter-book${raw.slice(LEGACY_SLIDES_PREFIX.length)}`
+  return raw
 }
 
 function jupyterSlideDecksSectionHtml(baseUrl) {
   const base = normalizeJupyterSlidesBase(baseUrl)
-  const indexPage = `${base}/index.html`
+  const indexPage = `${base}/index-1/index.html`
   const listItems = []
   for (let i = 0; i <= 28; i += 1) {
     const id = String(i).padStart(2, '0')
-    const pageUrl = `${base}/lecture-${id}.html`
+    const pageUrl = `${base}/lecture-${id}/index.html`
     listItems.push(
       `      <li><a href="${escapeHtml(pageUrl)}">Lecture ${i}</a></li>`,
     )
@@ -78,9 +83,7 @@ function jupyterSlideDecksSectionHtml(baseUrl) {
   return `
 <section class="lecture-slide-decks" aria-labelledby="lecture-slides-h">
   <h2 id="lecture-slides-h">Jupyter Book: one page per lecture</h2>
-  <p class="lecture-slide-decks__lede">MyST slide HTML is deployed on <strong>this</strong> site under <code>${escapeHtml(
-    base,
-  )}/</code>. <a href="${escapeHtml(indexPage)}">Lecture slides index</a>.</p>
+  <p class="lecture-slide-decks__lede">MyST pages live under <code>${escapeHtml(base)}/lecture-NN/index.html</code>. <a href="${escapeHtml(indexPage)}">Lecture slides index</a>.</p>
   <p class="lecture-slide-decks__note">(Local <code>npm run build</code> only produces the shell — run the GitHub Action or copy <code>jupyter-book/</code> into <code>dist/</code> to preview slides offline.)</p>
   <ul class="lecture-slide-decks__list">
 ${listItems.join('\n')}

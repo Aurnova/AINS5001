@@ -23,7 +23,7 @@ npm install
 npm run build
 ```
 
-`variant.json` sets `audience: "instructor"`, `lessonsCatalogUrl` (default **lectures.html** on this site), and `navItemLinks` for **Lessons**, **Files** (`course.imscc` when present), and **Assignments** (Jupyter Book `assignments.html` path). A local `npm run build` does **not** run the MyST build; the slide links resolve after a full Pages deploy (or if you copy a local `jupyter-book/` tree into `dist/` for preview).
+`variant.json` sets `audience: "instructor"`, `lessonsCatalogUrl` (default **lectures.html** on this site), and `navItemLinks` for **Lessons**, **Files** (`course.imscc` when present), and **Assignments** (Jupyter Book `assignments/index.html`). A local `npm run build` does **not** run the MyST build; the slide links resolve after a full Pages deploy (or if you copy a local `jupyter-book/` tree into `dist/` for preview).
 
 ## License
 
