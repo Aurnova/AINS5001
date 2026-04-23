@@ -13,7 +13,7 @@ npm install
 npm run build
 ```
 
-`variant.json` sets `audience: "instructor"` and optional `navItemLinks` for sidebar items (**Lessons**, **Files**, **Assignments**).
+`variant.json` sets `audience: "instructor"`, `lessonsCatalogUrl` (default **lectures.html** on this site), and optional `navItemLinks` for sidebar items (**Lessons**, **Files**, **Assignments**). The **Lessons** nav item should stay on `aurnova.github.io/AINS5001/`; put long-form or alternate mirrors in the body of [lectures.md](lectures.md) if needed.
 
 ## License
 

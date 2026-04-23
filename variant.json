@@ -4,9 +4,9 @@
   "courseTitle": "A Modern Approach to AI",
   "pillLabel": "Aurnova · AINS5001 · Instructor",
   "description": "Instructor-facing hub for AINS5001 — full-course delivery: narrative site, slides + TTS, IMS CC sources, and links to materials that must not live in the student clone.",
-  "lessonsCatalogUrl": "https://inquiryinstitute.github.io/aima/slides/",
+  "lessonsCatalogUrl": "lectures.html",
   "navItemLinks": {
-    "Lessons": "https://inquiryinstitute.github.io/aima/slides/",
+    "Lessons": "lectures.html",
     "Files": "https://github.com/InquiryInstitute/aima/tree/main/course",
     "Assignments": "https://github.com/InquiryInstitute/aima/blob/main/docs/CLASSROOM_SETUP.md"
   },

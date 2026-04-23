@@ -66,7 +66,8 @@ const NAV_ITEMS = [
   'Settings',
 ]
 
-const DEFAULT_LESSONS_CATALOG_URL = 'https://inquiryinstitute.github.io/aima/slides/'
+/** In-repo default so the “Lessons” nav item does not point off-site (e.g. another org’s GitHub Pages). */
+const DEFAULT_LESSONS_CATALOG_URL = 'lectures.html'
 
 /** Merge explicit per-item URLs from variant.json `navItemLinks` with the Lessons default. */
 function resolveNavLinks(variant) {
@@ -76,10 +77,16 @@ function resolveNavLinks(variant) {
   return out
 }
 
-function renderNavItem(item, navLinks) {
-  const active = item === 'Dashboard'
+function renderNavItem(item, navLinks, activeNavItem) {
+  const active = item === activeNavItem
   const cls = `populi-demo__nav-item${active ? ' populi-demo__nav-item--active' : ''}`
   const href = navLinks[item]
+  if (item === 'Dashboard' && !active) {
+    return `<a class="${cls}" href="index.html">${escapeHtml(item)}</a>`
+  }
+  if (item === 'Dashboard' && active) {
+    return `<span class="${cls}">${escapeHtml(item)}</span>`
+  }
   if (href) {
     return `<a class="${cls}" href="${escapeHtml(href)}">${escapeHtml(item)}</a>`
   }
@@ -98,9 +105,10 @@ function renderShellHtml({
   navLinks,
   footerHtml,
   audience,
+  activeNavItem = 'Dashboard',
 }) {
   const pill = pillLabel ?? `${String(courseCode).replace(/\s+/g, '')}: Dashboard`
-  const navItemsHtml = NAV_ITEMS.map((item) => renderNavItem(item, navLinks)).join('\n        ')
+  const navItemsHtml = NAV_ITEMS.map((item) => renderNavItem(item, navLinks, activeNavItem)).join('\n        ')
 
   const descPara = description
     ? `<p class="populi-demo__panel-body">${escapeHtml(description)}</p>`
@@ -218,9 +226,17 @@ function main() {
     footerHtml =
       audience === 'student'
         ? 'Student site · <strong>Lessons</strong> = public slide index · <strong>Assignments</strong> = GitHub Classroom (set URL in variant.json)'
-        : 'Instructor site · <strong>Lessons</strong> = Jupyter Book slides + TTS · set <strong>Files</strong> / <strong>Assignments</strong> in variant.json (IMS CC, Classroom)'
+        : 'Instructor site · <strong>Lessons</strong> = <a href="lectures.html">this site’s Lessons page</a> · set <strong>Files</strong> / <strong>Assignments</strong> in variant.json (IMS CC, Classroom)'
   }
-  const html = renderShellHtml({
+  const navLinks = resolveNavLinks(variant)
+
+  const dist = path.join(ROOT, 'dist')
+  if (existsSync(dist)) {
+    rmSync(dist, { recursive: true, force: true })
+  }
+  mkdirSync(path.join(dist, 'styles'), { recursive: true })
+
+  const indexHtml = renderShellHtml({
     courseCode: variant.courseCode,
     courseTitle: variant.courseTitle,
     pillLabel: variant.pillLabel,
@@ -229,17 +245,37 @@ function main() {
     bodyHtml,
     description: variant.description ?? '',
     programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
-    navLinks: resolveNavLinks(variant),
+    navLinks,
     footerHtml,
     audience,
+    activeNavItem: 'Dashboard',
   })
+  writeFileSync(path.join(dist, 'index.html'), indexHtml, 'utf8')
 
-  const dist = path.join(ROOT, 'dist')
-  if (existsSync(dist)) {
-    rmSync(dist, { recursive: true, force: true })
+  const lessonsPath = path.join(ROOT, 'lectures.md')
+  if (existsSync(lessonsPath)) {
+    let lessonsMd = readFileSync(lessonsPath, 'utf8')
+    lessonsMd = stripFrontmatter(lessonsMd)
+    lessonsMd = preprocessFences(lessonsMd)
+    const lessonsBody = marked.parse(lessonsMd)
+    const lessonsHtml = renderShellHtml({
+      courseCode: variant.courseCode,
+      courseTitle: variant.courseTitle,
+      pillLabel: variant.pillLabel,
+      alertText: variant.alertText ?? 'This course opens on Aug 31, 2026',
+      termLabel: variant.termLabel ?? '2026-2027: Fall Semester 2026 A',
+      bodyHtml: lessonsBody,
+      description: variant.description ?? '',
+      programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
+      navLinks,
+      footerHtml,
+      audience,
+      activeNavItem: 'Lessons',
+    })
+    writeFileSync(path.join(dist, 'lectures.html'), lessonsHtml, 'utf8')
+  } else {
+    throw new Error('Missing lectures.md (expected alongside index.md for the Lessons page)')
   }
-  mkdirSync(path.join(dist, 'styles'), { recursive: true })
-  writeFileSync(path.join(dist, 'index.html'), html, 'utf8')
 
   const styles = ['populi-demo.css', 'populi-demo-standalone.css']
   for (const f of styles) {
@@ -250,7 +286,7 @@ function main() {
     copyFileSync(src, path.join(dist, 'styles', f))
   }
 
-  console.log('[build-site] wrote dist/index.html (Populi layout)')
+  console.log('[build-site] wrote dist/index.html and dist/lectures.html (Populi layout)')
 }
 
 main()
