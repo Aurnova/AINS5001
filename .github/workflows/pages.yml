@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 # Build Jupyter Book with the same subpath the site will use (GitHub project Pages).
-# Optional: set repo variable AIMA_REPO (e.g. Aurnova/aima) in Settings → Variables. If unset, InquiryInstitute/aima is used.
-# Private aima: add repo secret AIMA_CLONE_TOKEN (PAT: repo read) for the checkout step.
+# Set vars.AIMA_REPO to override the aima monorepo (e.g. a public fork). Default: CastaliaInstitute/aima
+# That repo is private — set secret AIMA_CLONE_TOKEN (PAT, Contents: read) so checkout can cross orgs.
 env:
   JUPYTER_BASE_URL: /AINS5001/jupyter-book/
 
@@ -31,7 +31,7 @@ jobs:
       - name: Checkout aima (MyST + lecture sources)
         uses: actions/checkout@v4
         with:
-          repository: ${{ vars.AIMA_REPO || 'InquiryInstitute/aima' }}
+          repository: ${{ vars.AIMA_REPO || 'CastaliaInstitute/aima' }}
           path: aima
           fetch-depth: 1
           token: ${{ secrets.AIMA_CLONE_TOKEN != '' && secrets.AIMA_CLONE_TOKEN || github.token }}

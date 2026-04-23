@@ -14,7 +14,7 @@ On push to `main`, [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
 2. Runs `npm ci` + `npm run build` in this repo, then copies `aima/course/myst/_build/html` → `dist/jupyter-book/`, strips `CNAME` from the copy, and optionally copies `course.imscc` → `dist/course.imscc` if that file exists on `main`.
 3. Uploads `dist/` to GitHub Pages.
 
-To build **aima** from a different public fork, set the repository variable **`AIMA_REPO`** (e.g. `Aurnova/aima`) under *Settings → Secrets and variables → Actions → Variables*. If the source is **private**, add repository secret **`AIMA_CLONE_TOKEN`** (PAT with read access to that repository).
+The default aima source in CI is **`CastaliaInstitute/aima`**. It is **private** — the workflow must use repository secret **`AIMA_CLONE_TOKEN`**: a fine-grained or classic PAT with **read** access to that repository (or use a **public** fork and set the variable **`AIMA_REPO`** to that fork so the default `GITHUB_TOKEN` is enough). Set secrets under *Settings → Secrets and variables → Actions → Secrets* on this repo.
 
 ## Local build (shell only)
 
