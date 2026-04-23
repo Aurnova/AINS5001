@@ -49,7 +49,8 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;')
 }
 
-const DEFAULT_JUPYTER_SLIDES_BASE = 'https://inquiryinstitute.github.io/aima/slides'
+/** MyST build uses BASE_URL=/aima/; on GitHub.io the project path is also /aima/, so slide HTML is under /aima/aima/slides/. */
+const DEFAULT_JUPYTER_SLIDES_BASE = 'https://inquiryinstitute.github.io/aima/aima/slides'
 
 function jupyterSlideDecksSectionHtml(baseUrl) {
   const base = String(baseUrl || DEFAULT_JUPYTER_SLIDES_BASE).replace(/\/$/, '')
@@ -65,10 +66,10 @@ function jupyterSlideDecksSectionHtml(baseUrl) {
   return `
 <section class="lecture-slide-decks" aria-labelledby="lecture-slides-h">
   <h2 id="lecture-slides-h">Jupyter Book: one page per lecture</h2>
-  <p class="lecture-slide-decks__lede">Slide pages are hosted on the public AIMA Pages build. Start from the <a href="${escapeHtml(
+  <p class="lecture-slide-decks__lede">Public MyST slide HTML (same order as the <code>aima</code> repo). Index: <a href="${escapeHtml(
     indexPage,
-  )}" rel="noopener noreferrer" target="_blank">Lecture slides index</a> or open a lecture below.</p>
-  <p class="lecture-slide-decks__note">Links open in a new tab (host: <code>inquiryinstitute.github.io/aima</code>).</p>
+  )}" rel="noopener noreferrer" target="_blank">Lecture slides index</a>. On the <code>aima.catalia.institute</code> host use <code>/aima/slides/</code>, not <code>/slides/</code>.</p>
+  <p class="lecture-slide-decks__note">Links use the GitHub Pages URL so paths stay correct after redirects.</p>
   <ul class="lecture-slide-decks__list">
 ${listItems.join('\n')}
   </ul>
