@@ -47,7 +47,10 @@ jobs:
         working-directory: aima
         env:
           BASE_URL: ${{ env.JUPYTER_BASE_URL }}
-        run: npm ci && npm run pages:jupyter-book
+        run: |
+          git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          npm ci && npm run pages:jupyter-book
 
       - name: Strip CNAME from static export (stay on github.io)
         run: rm -f aima/course/myst/_build/html/CNAME
