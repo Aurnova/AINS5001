@@ -1,6 +1,6 @@
 ---
 title: AINS5001 — Instructor hub
-description: Castalia / Inquiry Institute AIMA — instructor delivery surface (not the student clone).
+description: Aurnova AINS5001 — instructor delivery surface (not the student clone). Jupyter Book is served on this same GitHub Pages site.
 ---
 
 # AINS5001: Instructor hub
@@ -12,11 +12,11 @@ description: Castalia / Inquiry Institute AIMA — instructor delivery surface (
 
 | Track | Where to find it |
 | --- | --- |
-| **Full narrative & book** | Public **[Jupyter Book (AIMA on Pages)](https://inquiryinstitute.github.io/aima/)** — readings, syllabus-aligned pages, assignments index |
-| **Slide sessions + MP3 / VTT** | **[Lecture slides index](https://inquiryinstitute.github.io/aima/slides/)** — same slide order as the Reveal / TTS pipeline in the upstream [aima](https://github.com/InquiryInstitute/aima) repo |
-| **Instructor notes & course ops** | [instructor-notes](https://github.com/InquiryInstitute/aima/tree/main/instructor-notes) in **aima** |
-| **Exercise solutions & rubrics** | Distribute through **Castalia / your program channel** (private LMS, faculty drive, or signed artifacts) — **not** the public student Pages site or bare student template repos |
-| **IMS CC (Moodle / LMS packages)** | Built from MyST sources under **aima** `course/` — see [course](https://github.com/InquiryInstitute/aima/tree/main/course) and deployment docs in that repo; use sidebar **Files** as a quick jump to the source tree you export from |
+| **Full narrative & book** | On **this** site: [Jupyter Book (index)](jupyter-book/index.html) — readings, syllabus-aligned pages, assignments index |
+| **Slide sessions + MP3 / VTT** | [Lecture slides index](jupyter-book/slides/index.html) — same slide order as the MyST build in the [aima](https://github.com/InquiryInstitute/aima) monorepo (CI runs `pages:jupyter-book` from that source) |
+| **Instructor notes & course ops** | [instructor-notes](https://github.com/InquiryInstitute/aima/tree/main/instructor-notes) in the upstream **aima** repository |
+| **Exercise solutions & rubrics** | Distribute through your **private** LMS, faculty drive, or signed artifacts — **not** the public student Pages site or bare student template repos |
+| **IMS CC (Moodle / LMS packages)** | If `course.imscc` is committed to this repository, the [download](course.imscc) is published at the site root by the same workflow. Otherwise build and ship from a local **aima** delivery clone. |
 
 ## Engineering workflow (reminder)
 
@@ -25,7 +25,7 @@ description: Castalia / Inquiry Institute AIMA — instructor delivery surface (
 - **Exercise starter** — [aima-exercise-starter](https://github.com/InquiryInstitute/aima/tree/main/classroom-templates/aima-exercise-starter) in **aima**.
 
 ```{note}
-This repository’s Pages build is a **thin Castalia-style shell** around `index.md`. Heavy course content stays in **aima**; the **student** site stays intentionally minimal.
+This repository’s **Deploy Pages** workflow builds a Populi-style shell, then **checks out the aima monorepo** and runs `npm run pages:jupyter-book` with `BASE_URL=/AINS5001/jupyter-book/`, and copies the static book into `dist/jupyter-book/` before upload. A local `npm run build` only produces the shell until you run that pipeline or copy a built `jupyter-book/` tree into `dist/`.
 ```
 
 ## References

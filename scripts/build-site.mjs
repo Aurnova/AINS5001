@@ -49,27 +49,32 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;')
 }
 
-/** MyST build uses BASE_URL=/aima/; on GitHub.io the project path is also /aima/, so slide HTML is under /aima/aima/slides/. */
-const DEFAULT_JUPYTER_SLIDES_BASE = 'https://inquiryinstitute.github.io/aima/aima/slides'
+/**
+ * Same-origin slide paths: CI copies MyST <code>course/myst/_build/html</code> → <code>dist/jupyter-book/</code>
+ * with <code>BASE_URL=/AINS5001/jupyter-book/</code> so links resolve on this site only.
+ */
+const DEFAULT_JUPYTER_SLIDES_BASE = 'jupyter-book/slides'
 
 function jupyterSlideDecksSectionHtml(baseUrl) {
-  const base = String(baseUrl || DEFAULT_JUPYTER_SLIDES_BASE).replace(/\/$/, '')
+  const raw = String(baseUrl || DEFAULT_JUPYTER_SLIDES_BASE).replace(/\/$/, '')
+  const isAbs = /^https?:\/\//i.test(raw)
+  const base = isAbs ? raw : raw.replace(/^\.\//, '')
   const indexPage = `${base}/index.html`
   const listItems = []
   for (let i = 0; i <= 28; i += 1) {
     const id = String(i).padStart(2, '0')
     const pageUrl = `${base}/lecture-${id}.html`
     listItems.push(
-      `      <li><a href="${escapeHtml(pageUrl)}" rel="noopener noreferrer" target="_blank">Lecture ${i}</a></li>`,
+      `      <li><a href="${escapeHtml(pageUrl)}">Lecture ${i}</a></li>`,
     )
   }
   return `
 <section class="lecture-slide-decks" aria-labelledby="lecture-slides-h">
   <h2 id="lecture-slides-h">Jupyter Book: one page per lecture</h2>
-  <p class="lecture-slide-decks__lede">Public MyST slide HTML (same order as the <code>aima</code> repo). Index: <a href="${escapeHtml(
-    indexPage,
-  )}" rel="noopener noreferrer" target="_blank">Lecture slides index</a>. On the <code>aima.catalia.institute</code> host use <code>/aima/slides/</code>, not <code>/slides/</code>.</p>
-  <p class="lecture-slide-decks__note">Links use the GitHub Pages URL so paths stay correct after redirects.</p>
+  <p class="lecture-slide-decks__lede">MyST slide HTML is deployed on <strong>this</strong> site under <code>${escapeHtml(
+    base,
+  )}/</code>. <a href="${escapeHtml(indexPage)}">Lecture slides index</a>.</p>
+  <p class="lecture-slide-decks__note">(Local <code>npm run build</code> only produces the shell — run the GitHub Action or copy <code>jupyter-book/</code> into <code>dist/</code> to preview slides offline.)</p>
   <ul class="lecture-slide-decks__list">
 ${listItems.join('\n')}
   </ul>
@@ -147,7 +152,7 @@ function renderShellHtml({
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(courseCode)}: ${escapeHtml(courseTitle)} — ${audience === 'student' ? 'Student' : 'Instructor'} — Castalia</title>
+  <title>${escapeHtml(courseCode)}: ${escapeHtml(courseTitle)} — ${audience === 'student' ? 'Student' : 'Instructor'} — Aurnova</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -158,10 +163,10 @@ function renderShellHtml({
   <div class="populi-demo populi-demo--standalone">
     <header class="populi-demo__topbar">
       <ul class="populi-demo__topbar-links">
-        <li><a href="https://castalia.institute">Home</a></li>
-        <li><a href="https://castalia.institute/membership">My Profile</a></li>
-        <li><a href="${escapeHtml(programsCatalogUrl)}">My Courses</a></li>
-        <li><a href="https://castalia.institute/contact">Directory</a></li>
+        <li><a href="https://aurnova.github.io">Aurnova</a></li>
+        <li><a href="https://github.com/Aurnova">GitHub</a></li>
+        <li><a href="${escapeHtml(programsCatalogUrl)}">This course (Pages)</a></li>
+        <li><a href="https://aurnova.github.io/AINS5001-student/">Student site</a></li>
       </ul>
       <span class="populi-demo__pill">${escapeHtml(pill)}</span>
     </header>
@@ -212,10 +217,10 @@ ${bodyHtml}
             </section>
             <section class="populi-demo__panel">
               <div class="populi-demo__panel-head">
-                <h2 class="populi-demo__panel-title">Programs catalog</h2>
+                <h2 class="populi-demo__panel-title">Jupyter Book (this site)</h2>
               </div>
               <p class="populi-demo__panel-body">
-                <a href="${escapeHtml(programsCatalogUrl)}">Open AIMA 5001 demos</a> on the Castalia programs site.
+                <a href="jupyter-book/index.html">Open the full book</a> (built on this same GitHub Pages host).
               </p>
             </section>
           </aside>
@@ -272,7 +277,7 @@ function main() {
     termLabel: variant.termLabel ?? '2026-2027: Fall Semester 2026 A',
     bodyHtml,
     description: variant.description ?? '',
-    programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
+    programsCatalogUrl: variant.programsCatalogUrl ?? 'https://aurnova.github.io/AINS5001/',
     navLinks,
     footerHtml,
     audience,
@@ -295,7 +300,7 @@ function main() {
       termLabel: variant.termLabel ?? '2026-2027: Fall Semester 2026 A',
       bodyHtml: lessonsBody,
       description: variant.description ?? '',
-      programsCatalogUrl: variant.programsCatalogUrl ?? 'https://programs.castalia.institute/catalog/aima',
+      programsCatalogUrl: variant.programsCatalogUrl ?? 'https://aurnova.github.io/AINS5001/',
       navLinks,
       footerHtml,
       audience,

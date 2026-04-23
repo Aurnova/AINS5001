@@ -3,15 +3,15 @@
   "courseCode": "AINS5001",
   "courseTitle": "A Modern Approach to AI",
   "pillLabel": "Aurnova · AINS5001 · Instructor",
-  "description": "Instructor-facing hub for AINS5001 — full-course delivery: narrative site, slides + TTS, IMS CC sources, and links to materials that must not live in the student clone.",
+  "description": "Instructor-facing hub for AINS5001 — full-course delivery: narrative site, MyST Jupyter Book (built in CI to this same GitHub Pages site), and optional IMS CC download at the site root.",
   "lessonsCatalogUrl": "lectures.html",
-  "jupyterSlidesBaseUrl": "https://inquiryinstitute.github.io/aima/aima/slides",
+  "jupyterSlidesBaseUrl": "jupyter-book/slides",
   "navItemLinks": {
     "Lessons": "lectures.html",
-    "Files": "https://github.com/InquiryInstitute/aima/tree/main/course",
-    "Assignments": "https://github.com/InquiryInstitute/aima/blob/main/docs/CLASSROOM_SETUP.md"
+    "Files": "course.imscc",
+    "Assignments": "jupyter-book/assignments.html"
   },
-  "programsCatalogUrl": "https://programs.castalia.institute/catalog/aima",
+  "programsCatalogUrl": "https://aurnova.github.io/AINS5001/",
   "alertText": "Instructor view — do not share this page as the primary student entry point.",
   "termLabel": "2026-2027: Fall Semester 2026 A"
 }

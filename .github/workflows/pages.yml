@@ -1,3 +1,4 @@
+# Populi shell + MyST Jupyter Book: single site at https://aurnova.github.io/AINS5001/
 name: Deploy Pages
 
 on:
@@ -14,29 +15,77 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# Build Jupyter Book with the same subpath the site will use (GitHub project Pages).
+# Optional: set repo variable AIMA_REPO (e.g. Aurnova/aima) in Settings → Variables. If unset, InquiryInstitute/aima is used.
+# Private aima: add repo secret AIMA_CLONE_TOKEN (PAT: repo read) for the checkout step.
+env:
+  JUPYTER_BASE_URL: /AINS5001/jupyter-book/
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout AINS5001
+        uses: actions/checkout@v4
+
+      - name: Checkout aima (MyST + lecture sources)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.AIMA_REPO || 'InquiryInstitute/aima' }}
+          path: aima
+          fetch-depth: 1
+          token: ${{ secrets.AIMA_CLONE_TOKEN != '' && secrets.AIMA_CLONE_TOKEN || github.token }}
+
+      - name: Set up Node (aima — match aima’s toolchain)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: aima/package-lock.json
+
+      - name: Build Jupyter Book for this Pages host
+        working-directory: aima
+        env:
+          BASE_URL: ${{ env.JUPYTER_BASE_URL }}
+        run: npm ci && npm run pages:jupyter-book
+
+      - name: Strip CNAME from static export (stay on github.io)
+        run: rm -f aima/course/myst/_build/html/CNAME
+
+      - name: Set up Node (AINS5001)
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Install
-        run: npm ci
-      - name: Build Populi-style site
-        run: npm run build
+          cache-dependency-path: package-lock.json
+
+      - name: Install and build Populi shell
+        run: npm ci && npm run build
+
+      - name: Assemble site (Jupyter Book + optional IMS CC + delivery docs)
+        run: |
+          mkdir -p dist/jupyter-book
+          cp -R aima/course/myst/_build/html/. dist/jupyter-book/
+          if [ -f course.imscc ]; then cp course.imscc dist/course.imscc; fi
+          if [ -d docs ] && [ -n "$(ls -A docs 2>/dev/null)" ]; then
+            mkdir -p dist/docs
+            cp -R docs/. dist/docs/
+          fi
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
