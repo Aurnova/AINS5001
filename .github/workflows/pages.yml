@@ -47,7 +47,8 @@ jobs:
         working-directory: aima
         env:
           BASE_URL: ${{ env.JUPYTER_BASE_URL }}
-        run: npm ci && npm run pages:jupyter-book
+        # npm ci requires a lock file in strict sync with package.json; use install until upstream lock is fixed.
+        run: npm install && npm run pages:jupyter-book
 
       - name: Strip CNAME from static export (stay on github.io)
         run: rm -f aima/course/myst/_build/html/CNAME
