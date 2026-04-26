@@ -1,0 +1,141 @@
+/*
+ * Castalia “Populi-adjacent” skin on top of imscc-pages output.
+ * imscc-pages uses .imscc-header, .imscc-layout, .imscc-nav, .imscc-main.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  --populi-bg: #0f172a;
+  --populi-panel: #1e293b;
+  --populi-text: #f8fafc;
+  --populi-muted: #94a3b8;
+  --populi-accent: #38bdf8;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  margin: 0;
+  background: #0b1220;
+  color: var(--populi-text);
+}
+
+.imscc-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+  color: var(--populi-text);
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.imscc-header-subline {
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--populi-muted);
+  letter-spacing: 0.02em;
+  max-width: 48rem;
+}
+
+.imscc-header h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.imscc-header a {
+  color: var(--populi-text);
+  text-decoration: none;
+}
+
+.imscc-header a:hover {
+  color: var(--populi-accent);
+}
+
+.imscc-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 280px) 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+.imscc-nav {
+  background: var(--populi-panel);
+  border-right: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 1.1rem 1rem 2rem;
+  color: var(--populi-muted);
+}
+
+.imscc-nav-section h2 {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+}
+
+.imscc-nav-section:first-child h2 {
+  margin-top: 0;
+}
+
+.imscc-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.imscc-nav a {
+  display: block;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.35rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.imscc-nav a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.imscc-main {
+  background: #f8fafc;
+  color: #0f172a;
+  padding: 1.75rem 2.25rem;
+  max-width: none;
+}
+
+.imscc-main h1 {
+  font-size: 1.65rem;
+  margin-top: 0;
+}
+
+.imscc-prose {
+  max-width: 52rem;
+  line-height: 1.65;
+}
+
+.imscc-frame {
+  width: 100%;
+  min-height: 70vh;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+@media (max-width: 900px) {
+  .imscc-layout {
+    grid-template-columns: 1fr;
+  }
+  .imscc-nav {
+    border-right: none;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  }
+}

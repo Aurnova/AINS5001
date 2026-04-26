@@ -1,0 +1,9 @@
+format: jb-book
+root: intro
+chapters:
+  - file: 01-syllabus
+    title: "Syllabus"
+  - file: 02-assignments
+    title: "Assignments"
+  - file: 03-discussions
+    title: "Discussions"

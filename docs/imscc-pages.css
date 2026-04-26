@@ -1,0 +1,13 @@
+:root { font-family: system-ui, sans-serif; line-height: 1.5; color: #1a1a1a; }
+body { margin: 0; background: #fafafa; }
+.imscc-header { background: #0f172a; color: #fff; padding: 1rem 1.5rem; }
+.imscc-header a { color: #e2e8f0; text-decoration: none; }
+.imscc-layout { display: grid; grid-template-columns: minmax(220px, 280px) 1fr; gap: 0; min-height: 80vh; }
+.imscc-nav { background: #fff; border-right: 1px solid #e5e7eb; padding: 1rem; }
+.imscc-nav-section h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; margin: 1rem 0 0.5rem; }
+.imscc-nav-section:first-child h2 { margin-top: 0; }
+.imscc-nav ul { list-style: none; padding: 0; margin: 0 0 1rem; }
+.imscc-nav a { color: #2563eb; text-decoration: none; }
+.imscc-nav a:hover { text-decoration: underline; }
+.imscc-main { padding: 1.5rem 2rem; background: #fff; max-width: 56rem; }
+.imscc-prose { max-width: 48rem; }

@@ -1,0 +1,6 @@
+title: "AIN 2001 — Artificial Intelligence: A Modern Approach"
+author: Inquiry Institute
+execute:
+  execute_notebooks: off
+parse:
+  myst_enable_extensions: true
