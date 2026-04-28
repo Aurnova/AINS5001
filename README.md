@@ -13,4 +13,6 @@ npm run course:build -- --variant delivery --push   # refresh ../aima-delivery
 npm run course:sync:aurnova-instructor -- --commit --push   # optional: push AINS5001
 ```
 
+Optional **Pages password gate** (client-side): set `AINS_PAGES_PASSWORD` when running `course:sync:aurnova-instructor` so each synced HTML page prompts once per browser session. See `scripts/apply-populi-bridge-to-docs.mjs` in **aima**.
+
 See `scripts/sync-aurnova-instructor-from-delivery.mjs` in **aima**.
